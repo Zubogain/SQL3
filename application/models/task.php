@@ -126,4 +126,15 @@ class TaskModel
 		}
 		return false;
 	}
+
+
+	public function assignUser($assignUserId, $userId)
+	{
+		$sth = $this->db->prepare('UPDATE `task` SET `assigned_user_id` = ? , `is_done` = 0 WHERE `id` = ? ');
+		if ($sth->execute(array((int) $assignUserId, (int) $userId)))
+		{
+			return true;
+		}
+		return false;
+	}
 }

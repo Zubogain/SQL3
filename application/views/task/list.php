@@ -27,9 +27,13 @@ $form = '
 		<tbody>';
 
 
+$todoCopy = []; // Вот по какой-то непонятной причине для меня, в 2 цикле foreach $todo возварщал пустоту.
+
+
 // Список дел именно которые создал сам пользователь
 foreach ($todo as $row) 
 {
+    $todoCopy[] = $row;
     if ($row['u_id'] == $_SESSION['user_id'])
     {
         $form .= '<tr>';
@@ -110,8 +114,7 @@ $form .= '</table>
 
 
 // Список дел пользователей которые требуют от тебя
-// Список не выводится :-( , и ошибки тоже нет. Хотя все вроде правильно
-foreach ($todo as $row) 
+foreach ($todoCopy as $row) 
 {
     if ($row['assigned_user_id'] == $_SESSION['user_id'] and $row['user_id'] != $_SESSION['user_id']) 
     {
@@ -140,3 +143,6 @@ foreach ($todo as $row)
 
 $form .= '</table>';
 echo $form;
+echo "<pre>";
+print_r($_POST);
+echo "</pre>";

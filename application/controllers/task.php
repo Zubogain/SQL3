@@ -99,6 +99,19 @@ class TaskController
 
 
 		/**
+		 * Переложение ответственности
+		 */
+		if (!empty($_POST['assign']) and !empty($_POST['assigned_user_id']))
+		{
+			$pie = explode('/', $_POST['assigned_user_id']);
+			if (count($pie) == 2)
+			{
+				$this->model->assignUser($pie[0], $pie[1]);
+			}
+		}
+
+
+		/**
 		 * Показываем весь список задач :)
 		 */
 		if (!empty($_POST['sort']) and !empty($_POST['sort_by']))
