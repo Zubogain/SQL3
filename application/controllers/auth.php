@@ -5,6 +5,7 @@
 class AuthController
 {
 	private $model = null;
+	private $dir = __DIR__ . '/../views/auth/';
 
 	function __construct($db)
 	{
@@ -106,7 +107,7 @@ class AuthController
 		}
 
 		
-		$view .= $this->render( __DIR__ . '/../views/auth/auth.php');
+		$view .= $this->render( $this->dir . 'auth.php');
 		echo $view;
 	}
 }
