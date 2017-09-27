@@ -5,6 +5,7 @@
 class TaskController
 {
 	private $model = null;
+	private $dir = __DIR__ . '/../views/task/';
 
 	function __construct($db)
 	{
@@ -88,11 +89,11 @@ class TaskController
 				$descriptionId = $value['id'];
 				$descriptionEdit = $value['description'];
 			}
-			$view .= $this->render(__DIR__ . '/../views/task/edit.php', ['descriptionId' => $descriptionId, 'descriptionEdit' => $descriptionEdit]);
+			$view .= $this->render( $this->dir . 'edit.php', ['descriptionId' => $descriptionId, 'descriptionEdit' => $descriptionEdit]);
 		}
 		else
 		{
-			$view .= $this->render(__DIR__ . '/../views/task/add.php');
+			$view .= $this->render( $this->dir . 'add.php');
 		}
 
 
@@ -118,25 +119,32 @@ class TaskController
 			switch ($_POST['sort_by'])
 			{
 				case 'is_done':
-					$todoSort = $this->model->sortTaskDone();
-					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $todoUsers]);
+
+					$listSort = $this->model->sortTaskDone();
+
+					$view .= $this->render( $this->dir . 'list.php', ['todo' => $listSort, 'getAllUsers' => $todoUsers]);
 					break;
 
 				case 'description':
-					$todoSort = $this->model->sortTaskDescription();
-					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $todoUsers]);
+
+					$listSort = $this->model->sortTaskDescription();
+
+					$view .= $this->render( $this->dir . 'list.php', ['todo' => $listSort, 'getAllUsers' => $todoUsers]);
 					break;
 				
 				default:
-					$todoSort = $this->model->sortTaskDateAdded();
-					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $todoUsers]);
+
+					$listSort = $this->model->sortTaskDateAdded();
+
+					$view .= $this->render( $this->dir . 'list.php', ['todo' => $listSort, 'getAllUsers' => $todoUsers]);
 					break;
 			}
 		}
 		else
 		{
 			$todo = $this->model->findAll();
-			$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todo, 'getAllUsers' => $todoUsers]);
+
+			$view .= $this->render( $this->dir . 'list.php', ['todo' => $todo, 'getAllUsers' => $todoUsers]);
 		}
 
 
