@@ -25,7 +25,11 @@ $form = '
 			</tr>
 		</thead>
 		<tbody>';
-
+$arrayAllUsers = [];
+foreach ($getAllUsers as $value)
+{
+    $arrayAllUsers[] = $value;
+}
 
 $todoCopy = []; // Вот по какой-то непонятной причине для меня, в 2 цикле foreach $todo возварщал пустоту.
 
@@ -54,7 +58,7 @@ foreach ($todo as $row)
 
         // Спустя пару часов безделья так и не додумался до адекватной реализации 
         // Вывод всех кто ответственен за задание
-        foreach ($db->query($sqlGetAllUsers) as $key) 
+        foreach ($arrayAllUsers as $key) 
         {
             if ($row['assigned_user_id'] == $key['id']) 
             {
@@ -84,7 +88,7 @@ foreach ($todo as $row)
 
         // Спустя пару часов безделья так и не додумался до адекватной реализации 
         // Цикл перебора всех пользователей в системе
-        foreach ($db->query($sqlGetAllUsers) as $users)
+        foreach ($arrayAllUsers as $users)
         {
             $form .= "<option value='$users[id]/$row[id]'>$users[login]</option>";
         }
@@ -143,6 +147,3 @@ foreach ($todoCopy as $row)
 
 $form .= '</table>';
 echo $form;
-echo "<pre>";
-print_r($_POST);
-echo "</pre>";

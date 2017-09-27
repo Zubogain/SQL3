@@ -3,12 +3,8 @@ ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
-echo "<pre>";
-var_dump($_SESSION);
-echo "</pre><hr>";
 /**
 * class Router по крайне мере должен быть :)
-* Моя лень мне не дала адекватно написать class Router, понять простить :-)
 */
 class Router
 {

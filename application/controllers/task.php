@@ -5,11 +5,9 @@
 class TaskController
 {
 	private $model = null;
-	private $db;
 
 	function __construct($db)
 	{
-		$this->db = $db;
 		$this->model = new TaskModel($db);
 	}
 
@@ -120,25 +118,24 @@ class TaskController
 			{
 				case 'is_done':
 					$todoSort = $this->model->sortTaskDone();
-					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'db' => $this->db, 'sqlGetAllUsers' => "SELECT user.id, user.login FROM user"]);
+					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $this->model->selectAllUsers()]);
 					break;
 
 				case 'description':
 					$todoSort = $this->model->sortTaskDescription();
-					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'db' => $this->db, 'sqlGetAllUsers' => "SELECT user.id, user.login FROM user"]);
+					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $this->model->selectAllUsers()]);
 					break;
 				
 				default:
 					$todoSort = $this->model->sortTaskDateAdded();
-					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'db' => $this->db, 'sqlGetAllUsers' => "SELECT user.id, user.login FROM user"]);
+					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $this->model->selectAllUsers()]);
 					break;
 			}
 		}
 		else
 		{
 			$todo = $this->model->findAll();
-			$allUsers = $this->model->selectAllUsers();
-			$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todo, 'db' => $this->db, 'sqlGetAllUsers' => "SELECT user.id, user.login FROM user"]);
+			$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todo, 'getAllUsers' => $this->model->selectAllUsers()]);
 		}
 
 
