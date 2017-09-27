@@ -112,30 +112,31 @@ class TaskController
 		/**
 		 * Показываем весь список задач :)
 		 */
+		$todoUsers = $this->model->selectAllUsers();
 		if (!empty($_POST['sort']) and !empty($_POST['sort_by']))
 		{
 			switch ($_POST['sort_by'])
 			{
 				case 'is_done':
 					$todoSort = $this->model->sortTaskDone();
-					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $this->model->selectAllUsers()]);
+					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $todoUsers]);
 					break;
 
 				case 'description':
 					$todoSort = $this->model->sortTaskDescription();
-					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $this->model->selectAllUsers()]);
+					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $todoUsers]);
 					break;
 				
 				default:
 					$todoSort = $this->model->sortTaskDateAdded();
-					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $this->model->selectAllUsers()]);
+					$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todoSort, 'getAllUsers' => $todoUsers]);
 					break;
 			}
 		}
 		else
 		{
 			$todo = $this->model->findAll();
-			$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todo, 'getAllUsers' => $this->model->selectAllUsers()]);
+			$view .= $this->render(__DIR__ . '/../views/task/list.php', ['todo' => $todo, 'getAllUsers' => $todoUsers]);
 		}
 
 
