@@ -25,18 +25,9 @@
         <tbody>
 <?php
 $form = '';
-$arrayAllUsers = [];
-foreach ($getAllUsers as $value)
-{
-    $arrayAllUsers[] = $value;
-}
-
-
-$todoCopy = [];
 // Список дел именно которые создал сам пользователь
 foreach ($todo as $row) 
 {
-    $todoCopy[] = $row;
     if ($row['u_id'] == $_SESSION['user_id'])
     {
         $form .= '<tr>';
@@ -56,7 +47,7 @@ foreach ($todo as $row)
 
 
         // Вывод всех кто ответственен за задание
-        foreach ($arrayAllUsers as $key) 
+        foreach ($getAllUsers as $key) 
         {
             if ($row['assigned_user_id'] == $key['id']) 
             {
@@ -85,7 +76,7 @@ foreach ($todo as $row)
 
 
         // Цикл перебора всех пользователей в системе
-        foreach ($arrayAllUsers as $users)
+        foreach ($getAllUsers as $users)
         {
             $form .= "<option value=\"{$users['id']}/{$row['id']}\">{$users['login']}</option>";
         }
@@ -117,7 +108,7 @@ $form = '';
         </thead>
 <?php
 // Список дел пользователей которые требуют от тебя
-foreach ($todoCopy as $row)
+foreach ($todo as $row)
 {
     if ($row['assigned_user_id'] == $_SESSION['user_id'] and $row['user_id'] != $_SESSION['user_id']) 
     {
