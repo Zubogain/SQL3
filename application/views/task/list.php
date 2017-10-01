@@ -1,5 +1,5 @@
 <div style="display: inline-block; margin-left: 20px;">
-    <form method="POST">
+    <form method="POST" action="?/task">
         <label for="sort">Сортировать по:</label>
         <select name="sort_by">
             <option value="date_added">Дате добавления</option>
@@ -72,16 +72,16 @@ foreach ($todo as $row)
         }
             
         $id = $row['id'];
-        $form .= "<td><a href=\"?id={$id}&action=edit\">Изменить</a>";
+        $form .= "<td><a href=\"?/task/action={$id}/edit\">Изменить</a>";
 
 
         // Пороверка если за задание отвечаю я то вывести ссылку на выполнение
         if ($row['assigned_user_id'] == $_SESSION['user_id']) 
         {
-            $form .= " <a href='?id={$id}&action=done'>Выполнить</a>";
+            $form .= " <a href='?/task/action={$id}/done'>Выполнить</a>";
         }
-        $form .= " <a href=\"?id={$id}&action=delete\">Удалить</a></td>";
-        $form .= "<td><form method='POST'><select name='assigned_user_id'>";
+        $form .= " <a href=\"?/task/action={$id}/delete\">Удалить</a></td>";
+        $form .= "<td><form method='POST' action=\"?/task\"><select name='assigned_user_id'>";
 
 
         // Цикл перебора всех пользователей в системе
@@ -139,7 +139,7 @@ foreach ($todoCopy as $row)
 
         $form .= '<td>'. $row['login'] .'</td>';
         $id = $row['id'];
-        $form .= "<td><a href='?id={$id}&action=edit'>Изменить</a> <a href='?id={$id}&action=done'>Выполнить</a> <a href='?id={$id}&action=delete'>Удалить</a></td>";
+        $form .= "<td><a href='?/task/action={$id}/edit'>Изменить</a> <a href='?/task/action={$id}/done'>Выполнить</a> <a href='?/task/action={$id}/delete'>Удалить</a></td>";
     }
 }
 

@@ -13,6 +13,9 @@ session_start();
 	<?php
 	// Главная страница и есть основной шаблон
 	require_once __DIR__ . '/application/bootstrap.php';
+	if (isset($_SESSION['user_login'])) {
+		echo "<a href=\"?/logout\">Выйти</a>";
+	}
 	?>
 	</div>
 </body>

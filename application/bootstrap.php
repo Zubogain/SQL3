@@ -1,17 +1,15 @@
 <?php
-// Модули якобы ядра :-)
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+/*
+ * Модули якобы ядра :-)
+ */
 require_once __DIR__ . '/core/db.php';
 require_once __DIR__ . '/core/router.php';
-
-
-// Здесь этого не должно быть пути к контроллерам и моделям должен инклюдить Router
-// Но моя лень мне не дала этого сделать :-)
-// Понять простить :-)
-require_once __DIR__ . '/controllers/task.php';
-require_once __DIR__ . '/models/task.php';
-
-
-// Конфиг для MySQL
+/*
+ * Конфиг для MySQL
+ */
 $config = include 'config.php';
 $db = DataBase::connect(
 	$config['mysql']['host'],
@@ -19,4 +17,21 @@ $db = DataBase::connect(
 	$config['mysql']['user'],
 	$config['mysql']['pass']
 );
-Router::start($db);
+/*
+ * Возможные маршруты
+ */
+$router = new Router(__DIR__ . '/controllers/', $db);
+$router->get('/', 'MainController@index');
+$router->get('/logout', 'MainController@logout'); // session_destroy
+$router->get('/auth', 'AuthController@auth'); // Регистрация и Авторизация
+$router->post('/auth', 'AuthController@auth'); // Регистрация и Авторизация
+$router->get('/task', 'TaskController@index');
+$router->post('/task', 'TaskController@index');
+$router->get('/?/task/action=(\d+)/done', 'TaskController@index');
+$router->get('/?/task/action=(\d+)/edit', 'TaskController@index');
+$router->get('/?/task/action=(\d+)/delete', 'TaskController@index');
+/*
+ * Удаляем "/?", потому что не сделали настройки на серверах
+ */
+$currentUrl = str_replace('/?', '', $_SERVER['REQUEST_URI']);
+$router->run($currentUrl);

@@ -5,10 +5,10 @@
 class TaskController
 {
 	private $model = null;
-	private $dir = __DIR__ . '/../views/task/';
 
 	function __construct($db)
 	{
+		include __DIR__ . '/../models/task.php';
 		$this->model = new TaskModel($db);
 	}
 
@@ -19,14 +19,13 @@ class TaskController
 	 */
 	private function render($template, $params = [])
 	{
-		if (is_file($template))
-		{
+		$fileTemplate = __DIR__ . '/../views/'.$template;
+		if (is_file($fileTemplate)) {
 			ob_start();
-			if (count($params) > 0) // Если кол-во параметров больше чем 0 то преобразуем параметры в переменные.
-			{
+			if (count($params) > 0) {
 				extract($params);
 			}
-			include $template;
+			include $fileTemplate;
 			return ob_get_clean();
 		}
 	}
@@ -35,7 +34,7 @@ class TaskController
 	/**
 	 * Показывем список дел и не только :-)
 	 */
-	public function getTodoList()
+	public function index()
 	{
 		$view = '<h3>Дела созданные вами:</h3>'; // Здесь весь сгенерированный html
 
@@ -58,21 +57,19 @@ class TaskController
 		}
 
 
-		
 		/**
 		 * Проверка событий выполнить и удалить.
 		 */
-		if (isset($_GET['id']) and isset($_GET['action']))
-		{
-			if ((string) $_GET['action'] == 'done') // запрос на выполнение задания
+		if (isset($_GET['/task/action']) and $pie = explode('/', $_GET['/task/action'])) {
+			if ((string) $pie[1] == 'done') // запрос на выполнение задания
 			{
-				$this->model->doneTask($_GET['id']);
+				$this->model->doneTask($pie[0]);
 			}
 
 
-			if ((string) $_GET['action'] == 'delete') // запрос на удаление задания
+			if ((string) $pie[1] == 'delete') // запрос на удаление задания
 			{
-				$this->model->deleteTask($_GET['id']);
+				$this->model->deleteTask($pie[0]);
 			}
 		}
 
@@ -80,20 +77,20 @@ class TaskController
 		/**
 		 * Генерация формы на добавление или изменение в зависимости от события
 		 */
-		if (isset($_GET['id']) and isset($_GET['action']) and (string) $_GET['action'] == 'edit')
+		if (isset($_GET['/task/action']) and $pie = explode('/', $_GET['/task/action']) and (string) $pie[1] == 'edit')
 		{
 			$descriptionId = '';
 			$descriptionEdit = '';
-			foreach ($this->model->selectTask($_GET['id']) as $value)
+			foreach ($this->model->selectTask($pie[0]) as $value)
 			{
 				$descriptionId = $value['id'];
 				$descriptionEdit = $value['description'];
 			}
-			$view .= $this->render( $this->dir . 'edit.php', ['descriptionId' => $descriptionId, 'descriptionEdit' => $descriptionEdit]);
+			$view .= $this->render('task/edit.php', ['descriptionId' => $descriptionId, 'descriptionEdit' => $descriptionEdit]);
 		}
 		else
 		{
-			$view .= $this->render( $this->dir . 'add.php');
+			$view .= $this->render('task/add.php');
 		}
 
 
@@ -122,21 +119,21 @@ class TaskController
 
 					$listSort = $this->model->sortTaskDone();
 
-					$view .= $this->render( $this->dir . 'list.php', ['todo' => $listSort, 'getAllUsers' => $todoUsers]);
+					$view .= $this->render('task/list.php', ['todo' => $listSort, 'getAllUsers' => $todoUsers]);
 					break;
 
 				case 'description':
 
 					$listSort = $this->model->sortTaskDescription();
 
-					$view .= $this->render( $this->dir . 'list.php', ['todo' => $listSort, 'getAllUsers' => $todoUsers]);
+					$view .= $this->render('task/list.php', ['todo' => $listSort, 'getAllUsers' => $todoUsers]);
 					break;
 				
 				default:
 
 					$listSort = $this->model->sortTaskDateAdded();
 
-					$view .= $this->render( $this->dir . 'list.php', ['todo' => $listSort, 'getAllUsers' => $todoUsers]);
+					$view .= $this->render('task/list.php', ['todo' => $listSort, 'getAllUsers' => $todoUsers]);
 					break;
 			}
 		}
@@ -144,10 +141,8 @@ class TaskController
 		{
 			$todo = $this->model->findAll();
 
-			$view .= $this->render( $this->dir . 'list.php', ['todo' => $todo, 'getAllUsers' => $todoUsers]);
+			$view .= $this->render('task/list.php', ['todo' => $todo, 'getAllUsers' => $todoUsers]);
 		}
-
-
 		echo $view;
 	}
 }
