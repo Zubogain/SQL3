@@ -39,6 +39,7 @@ class AuthController
 		$view = '';
 		if (isset($_SESSION['user_login'])) {
 			header('Location: /?/task');
+			die;
 		}
 
 
@@ -58,7 +59,7 @@ class AuthController
 						{
 							$_SESSION['user_login'] = $userInfo['login'];
 							$_SESSION['user_id'] = $userInfo['id'];
-							header('location: /?/task');
+							header('Location: /?/task');
 						}
 					}
 				}
@@ -90,7 +91,7 @@ class AuthController
 						{
 							$_SESSION['user_login'] = $userInfo['login'];
 							$_SESSION['user_id'] = $userInfo['id'];
-							header('location: /?/task');
+							header('Location: /?/task');
 						}
 						else
 						{

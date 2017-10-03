@@ -36,6 +36,10 @@ class TaskController
 	 */
 	public function index()
 	{
+		if (!isset($_SESSION['user_login'])) {
+			header('Location: /');
+			die;
+		}
 		$view = '<h3>Дела созданные вами:</h3>'; // Здесь весь сгенерированный html
 
 
